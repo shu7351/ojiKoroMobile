@@ -1,0 +1,35 @@
+.poko {
+    width: 30%;
+}
+.head{
+}
+.pl_size{
+    width: 6vw;
+}
+.player {
+    position: fixed;
+}
+.maxpoint{
+    position: fixed;
+}
+
+.body {
+    display: flex;
+    position: fixed;
+    top: 40%;
+}
+
+.GAMEOVER{
+    size: 300px;
+    color: red;
+}
+.RESTART{
+    color: rgb(255, 255, 255);
+    size: 100%;
+}
+.comm{
+    text-align: center;
+}
+.playcount{
+    text-align: right;
+}

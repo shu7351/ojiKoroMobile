@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ぽここっち向いちゃった</title>
+    <link href="pokoStyle.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="head">
+    <h2 class="playcount"></h2>
+    <h2 class="GAMEOVER comm"></h1>
+    <h2 class="RESTART comm"></h1>
+    <p><div style="text-align: center;"><img class="poko" src = "hurimuki.png"></div></p>
+</div>
+    <div class="body">
+        <div class="goal" ><img class="pl_size" src = "goal.png"></div>
+        <div class="maxpoint"><img class="pl_size" src = "maxpoint.png"></div>
+        <div class="player"><img class="pl_size" src="player.png"></div>
+    </div>
+    
+    <script>
+        let playcount = localStorage.getItem('playcount');
+        let maxpoint = localStorage.getItem('maxpoint');
+        let hurimukilag = 0; //数秒振り向かせ続けるためのラグ処理用
+        let x = 20;//プレイヤー位置
+        let move = window.innerWidth / 80; //画面サイズで移動速度変更
+        let hurimuki = false; //こっちを向いていたらtrue
+        let press = false; //プレイヤーが移動している間はtrue
+        let gameOver = false; //ゲームオーバーでtrue
+        var pics = new Array("poko.png","hurimuki.png","over.png"); 
+    
+        let maxpointx = document.querySelector(".maxpoint");
+        let poko = document.querySelector(".poko"); 
+        let player = document.querySelector(".player");
+        let body = document.querySelector("body");
+        let over = document.querySelector(".GAMEOVER");
+        let restart = document.querySelector(".RESTART");
+        let playcounter = document.querySelector(".playcount");
+        maxpointx.style.right = maxpoint + 'px'; 
+
+        let a = setInterval(gameMain, 80);
+    
+        function gameMain() {
+            player.style.right = x + 'px'; 
+            playcounter.innerHTML = playcount + "回目の挑戦!!"
+            if(press && hurimuki){ //ゲームオーバー判定
+                body.style.backgroundColor = "Black";
+                over.innerHTML = "GAMEOVER";
+                restart.innerHTML = "Tap Screen"
+                poko.src = pics[2];
+                if(x > parseInt(maxpoint)){
+                    localStorage.setItem('maxpoint',x);
+                }
+                gameOver = true;
+                clearInterval(a);
+            }
+
+            if(x >= window.innerWidth - 30){ //クリア判定
+                over.innerHTML = "クリアおめでとう!!!!!!!!";
+                clearInterval(a);
+            }
+
+            if(press){ //画面タップ時の移動処理
+                x = x + move;
+                player.style.right = x + 'px';
+            }
+
+            if (!hurimuki) { //振り向いていなければ乱数を引く　3で振り向く
+                let random = Math.floor(Math.random() * 10);
+                poko.src = pics[0];
+                if (random == 3) {
+                    poko.src = pics[1];
+                    hurimuki = true;
+                }
+            }else{ //振り向いている間はラグを設定　1.6秒間は振り向き続ける
+                hurimukilag++;
+                if(hurimukilag == 20){
+                    hurimuki = false;
+                    hurimukilag = 0;
+                }
+            }
+
+            document.addEventListener('keydown',function(){
+
+                if( event.keyCode === 37 ){ //カーソルキー左で移動
+                press = true;
+                }else if(event.keyCode === 13){ //エンターキーでリロード
+                    localStorage.setItem('playcount',(Number(playcount)+1));
+                    window.location.reload();
+                }
+                
+            ;});
+            
+           document.addEventListener('touchstart',function(){
+
+            if(gameOver){ //ゲームオーバー画面でのタップならリロード
+                gameOver = false;
+                localStorage.setItem('playcount',(Number(playcount)+1));
+                window.location.reload();
+            }else{ //ゲーム画面でのタップなら移動
+                press = true;
+            }
+            ;});
+            document.addEventListener('keyup',function(){
+                press = false;
+            ;});
+            document.addEventListener('touchend',function(){
+                press = false;
+            ;});
+        }
+    </script>
+</body>
+
+</html>
