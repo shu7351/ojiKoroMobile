@@ -10,12 +10,12 @@
 <body>
     <div class="head">
     <h2 class="playcount"></h2>
-    <h2 class="GAMEOVER comm"></h1>
+    <h2 class="GAMEOVER comm">ねこをすくえ！</h1>
     <h2 class="RESTART comm"></h1>
     <p><div style="text-align: center;"><img class="poko" src = "hurimuki.png"></div></p>
 </div>
     <div class="body">
-        <div class="goal" ><img class="pl_size" src = "goal.png"></div>
+        <div class="goal" ><img class="pl_size" src = "cat.png"></div>
         <div class="maxpoint"><img class="pl_size" src = "maxpoint.png"></div>
         <div class="player"><img class="pl_size" src="player.png"></div>
     </div>
@@ -44,11 +44,12 @@
     
         function gameMain() {
             player.style.right = x + 'px'; 
-            playcounter.innerHTML = playcount + "回目の挑戦!!"
+            playcounter.innerHTML = playcount + "かいめ"
             if(press && hurimuki){ //ゲームオーバー判定
                 body.style.backgroundColor = "Black";
-                over.innerHTML = "GAMEOVER";
-                restart.innerHTML = "Tap Screen"
+                over.style.color = "White"
+                over.innerHTML = "みつかった";
+                playcounter.style.color = "White"
                 poko.src = pics[2];
                 if(x > parseInt(maxpoint)){
                     localStorage.setItem('maxpoint',x);
